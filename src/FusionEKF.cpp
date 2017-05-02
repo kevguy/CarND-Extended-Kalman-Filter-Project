@@ -37,11 +37,11 @@ FusionEKF::FusionEKF() {
     * Set the process and measurement noises
   */
   H_laser_ << 1, 0, 0, 0,
-  0, 1, 0, 0;
+              0, 1, 0, 0;
   
   Hj_ << 1, 1, 0, 0,
-  1, 1, 0, 0,
-  1, 1, 1, 1;
+          1, 1, 0, 0,
+          1, 1, 1, 1;
   
   //the initial transition matrix F_
   ekf_.F_ = MatrixXd(4, 4);
@@ -103,6 +103,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       ekf_.x_(0) = measurement_pack.raw_measurements_(0);
       ekf_.x_(1) = measurement_pack.raw_measurements_(1);
     }
+    
+    //cout << ekf_.x_ << endl;
+    previous_timestamp_ = measurement_pack.timestamp_;
 
     // done initializing, no need to predict or update
     is_initialized_ = true;
